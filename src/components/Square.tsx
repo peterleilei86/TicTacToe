@@ -8,7 +8,7 @@ interface SquareProps {
 
 const Square = ({value, onClick}: SquareProps) => {
   return (
-    <button disabled={!!value} className='square' onClick={onClick}>
+    <button data-testid='square' disabled={!!value} className='square' onClick={onClick}>
       {value}
     </button>
   )
