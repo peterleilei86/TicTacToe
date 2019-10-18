@@ -15,3 +15,9 @@ yarn start
 
 go to localhost:3000 on your browser
 ```
+
+## Run test
+
+```js
+yarn test
+```
