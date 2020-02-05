@@ -12,7 +12,7 @@ describe('test game component', () => {
   })
 
   it('should display X when square is clicked', () => {
-    const {getByText, getAllByText, queryAllByTestId} = render(<Game />)
+    const {getAllByText, queryAllByTestId} = render(<Game />)
     const nodes = queryAllByTestId('square')
     fireEvent.click(nodes[0])
     expect(getAllByText('X')).toHaveLength(1)

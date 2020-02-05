@@ -14,18 +14,14 @@ const Board = ({squares, onClick}: BoardProps) => {
   }
 
   return (
-    <div className='board'>
-      <div className='row'>
+    <div className='flex items-center justify-center'>
+      <div className='w-2/5 h-auto flex flex-wrap'>
         {renderSquare(0)}
         {renderSquare(1)}
         {renderSquare(2)}
-      </div>
-      <div className='row'>
         {renderSquare(3)}
         {renderSquare(4)}
         {renderSquare(5)}
-      </div>
-      <div className='row'>
         {renderSquare(6)}
         {renderSquare(7)}
         {renderSquare(8)}

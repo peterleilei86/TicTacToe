@@ -1,16 +1,17 @@
 import {Tiles} from '../components/Game'
 
+const lines = [
+  [0, 1, 2],
+  [3, 4, 5],
+  [6, 7, 8],
+  [0, 3, 6],
+  [1, 4, 7],
+  [2, 5, 8],
+  [0, 4, 8],
+  [2, 4, 6]
+]
+
 export const calcWinner = (squares: Tiles) => {
-  const lines = [
-    [0, 1, 2],
-    [3, 4, 5],
-    [6, 7, 8],
-    [0, 3, 6],
-    [1, 4, 7],
-    [2, 5, 8],
-    [0, 4, 8],
-    [2, 4, 6]
-  ]
   for (let i = 0; i < lines.length; i++) {
     const [a, b, c] = lines[i]
     if (squares[a] && squares[a] === squares[b] && squares[b] === squares[c]) {
@@ -21,16 +22,6 @@ export const calcWinner = (squares: Tiles) => {
 }
 
 export const calMove = (squares: Tiles): number => {
-  const lines = [
-    [0, 1, 2],
-    [3, 4, 5],
-    [6, 7, 8],
-    [0, 3, 6],
-    [1, 4, 7],
-    [2, 5, 8],
-    [0, 4, 8],
-    [2, 4, 6]
-  ]
   // if any line has two same tiles and one empty tile,
   // return index of the empty tile
   for (let i = 0; i < lines.length; i++) {

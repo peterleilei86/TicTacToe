@@ -64,15 +64,18 @@ const Game: React.FC = () => {
       ? "It's a draw!"
       : ''
   return (
-    <div className='game'>
-      <div className='title'>
-        <h2>Tic Tac Toe</h2>
-        <button className='reset' onClick={handleReset}>
+    <div className='container w-1/2 py-3 border-2 my-3'>
+      <div className='h-20 relative'>
+        <h2 className='text-center font-bold sm:text-xl md:text-2xl  lg:text-3xl'>Tic Tac Toe</h2>
+        <button
+          className='bg-green-400 hover:bg-green-600 text-white font-bold px-2 py-2 mx-10 rounded absolute right-0 top-0'
+          onClick={handleReset}
+        >
           Reset
         </button>
       </div>
       <Board squares={squares} onClick={(index: number) => handleClick(index)} />
-      {winner && <p className='winner'>{message}</p>}
+      {winner && <p className='text-center font-bold text-3xl text-green-400 my-5'>{message}</p>}
     </div>
   )
 }
