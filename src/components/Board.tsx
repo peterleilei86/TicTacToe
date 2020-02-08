@@ -10,7 +10,7 @@ type BoardProps = {
 const Board = ({ squares, onClick }: BoardProps) => {
 	const renderSquare = (index: number) => {
 		const handleClick = (e: React.SyntheticEvent) => onClick(index);
-		return <Square value={squares[index]} onClick={handleClick} />;
+		return <Square key={index} value={squares[index]} onClick={handleClick} />;
 	};
 
 	return (

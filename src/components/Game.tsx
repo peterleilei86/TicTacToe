@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Board from './Board';
 import { calcWinner, calMove } from '../utils';
+import { useLocalStorage } from '../hooks/useLocalStorage';
 
 export type CurrentPlayer = 'X' | 'O';
 export type Tile = CurrentPlayer | null;
@@ -10,8 +11,10 @@ type Winner = CurrentPlayer | 'draw' | null;
 const COMPUTER = 'O';
 const HUMAN = 'X';
 
+const LOCALSTORAGE_KEY = 'SQUARES';
+
 const Game: React.FC = () => {
-	const [squares, setSquares] = useState<Tiles>(Array(9).fill(null));
+	const [squares, setSquares] = useLocalStorage(LOCALSTORAGE_KEY, Array(9).fill(null));
 	const [currentPlayer, setCurrentPlayer] = useState<CurrentPlayer>(HUMAN);
 	const [winner, setWinner] = useState<Winner>(null);
 
@@ -25,20 +28,6 @@ const Game: React.FC = () => {
 		setCurrentPlayer(newCurrentPlayer);
 	};
 
-	const makeMove = (squares: Tiles) => {
-		const index = calMove(squares);
-		if (index >= 0) {
-			const newSquares = squares.map((s, i) => {
-				if (i === index) {
-					return COMPUTER;
-				}
-				return s;
-			});
-			setSquares(newSquares);
-			setCurrentPlayer(HUMAN);
-		}
-	};
-
 	const handleReset = (e: React.SyntheticEvent) => {
 		setSquares(Array(9).fill(null));
 		setCurrentPlayer(HUMAN);
@@ -46,14 +35,27 @@ const Game: React.FC = () => {
 	};
 
 	useEffect(() => {
+		const makeMove = (squares: Tiles) => {
+			const index = calMove(squares);
+			if (index >= 0) {
+				const newSquares = squares.map((s, i) => {
+					if (i === index) {
+						return COMPUTER;
+					}
+					return s;
+				});
+				setSquares(newSquares);
+				setCurrentPlayer(HUMAN);
+			}
+		};
 		if (calcWinner(squares)) {
 			setWinner(calcWinner(squares));
-		} else if (!calcWinner(squares) && squares.every(s => s !== null)) {
+		} else if (!calcWinner(squares) && squares.every((s: any) => s !== null)) {
 			setWinner('draw');
 		} else if (currentPlayer === COMPUTER) {
 			makeMove(squares);
 		}
-	}, [squares, currentPlayer]);
+	}, [squares, setSquares, currentPlayer]);
 
 	const message =
 		winner === 'X'
