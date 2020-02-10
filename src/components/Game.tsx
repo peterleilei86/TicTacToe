@@ -20,11 +20,16 @@ const HUMAN = 'X';
 const LOCALSTORAGE_SQUARES = 'SQUARES';
 const LOCALSTORAGE_HISTORY = 'HISTORY';
 
+//TODO: ADD TIME TRAVEL FEATURE SO THAT HISTORY ITEMS ARE CLICKABLE
+// AND CAN GO BACK TO THAT SPECIFIC GAME
+// REPLACE `useState` WITH `useReducer`
+
 const Game: React.FC = () => {
-	const [squares, setSquares] = useLocalStorage(LOCALSTORAGE_SQUARES, Array(9).fill(null));
+	const initialSquares = Array(9).fill(null);
+	const [squares, setSquares] = useLocalStorage(LOCALSTORAGE_SQUARES, initialSquares);
 	const [currentPlayer, setCurrentPlayer] = useState<CurrentPlayer>(HUMAN);
 	const [winner, setWinner] = useState<Winner>(null);
-	const [history, setHistory] = useLocalStorage(LOCALSTORAGE_HISTORY, [] as History[]);
+	const [history, setHistory] = useLocalStorage(LOCALSTORAGE_HISTORY, [] as GameHistory[]);
 	const [showHistory, setShowHistory] = useState(false);
 
 	const handleClick = (index: number) => {
@@ -35,7 +40,10 @@ const Game: React.FC = () => {
 	};
 
 	const handleReset = (e: React.SyntheticEvent) => {
-		setSquares(Array(9).fill(null));
+		if (winner) {
+			setHistory((h: GameHistory[]) => [{ time: Date.now(), winner }, ...h]);
+		}
+		setSquares(initialSquares);
 		setCurrentPlayer(HUMAN);
 		setWinner(null);
 		setShowHistory(false);
@@ -60,10 +68,8 @@ const Game: React.FC = () => {
 		const winner = calcWinner(squares);
 		if (winner) {
 			setWinner(winner);
-			setHistory((h: History[]) => [...h, { time: Date.now(), winner }]);
 		} else if (!winner && squares.every((s: any) => s !== null)) {
 			setWinner('draw');
-			setHistory((h: History[]) => [...h, { time: Date.now(), winner: 'draw' }]);
 		} else if (currentPlayer === COMPUTER) {
 			makeMove(squares);
 		}
